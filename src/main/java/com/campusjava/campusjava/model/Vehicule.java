@@ -12,7 +12,7 @@ public class Vehicule {
 
     //constructeur pour nos tests
 
-    public Vehicule(Integer id, String brand, String modele, String color) {
+    public Vehicule(int id, String brand, String modele, String color) {
         this.id=id;
         this.brand=brand;
         this.modele=modele;
