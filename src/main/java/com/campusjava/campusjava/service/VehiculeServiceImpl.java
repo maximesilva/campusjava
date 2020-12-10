@@ -1,8 +1,6 @@
 package com.campusjava.campusjava.service;
 
 import com.campusjava.campusjava.model.Vehicule;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
