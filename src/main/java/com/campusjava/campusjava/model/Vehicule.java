@@ -1,8 +1,11 @@
 package com.campusjava.campusjava.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Transient;
 
 @Entity
 public class Vehicule {
@@ -22,6 +25,7 @@ public class Vehicule {
         this.prix = prix;
     }
 
+    @JsonIgnore
     private int prix;
 
     //constructeur par défaut

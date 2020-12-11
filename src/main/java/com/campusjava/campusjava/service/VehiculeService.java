@@ -9,7 +9,6 @@ import java.util.List;
 @Repository
 public interface VehiculeService extends JpaRepository<Vehicule, Integer> {
 
-    Vehicule findById(int id);
     List<Vehicule> findByPrixGreaterThan(int prixLimit);
     List<Vehicule> findByBrandLike(String recherche);
 }

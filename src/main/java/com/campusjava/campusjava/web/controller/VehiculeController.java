@@ -37,7 +37,7 @@ public class VehiculeController {
     //Récupérer un véhicule par son Id
     @GetMapping(value="/vehicules/{id}")
     public Vehicule showOneVehicule(@PathVariable int id) {
-        return vehiculeService.findById(id);
+        return vehiculeService.getOne(id);
     }
 
     @GetMapping(value = "test/vehicules/prix/{prixLimit}")
