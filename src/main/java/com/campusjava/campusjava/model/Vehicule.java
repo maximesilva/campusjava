@@ -1,10 +1,28 @@
 package com.campusjava.campusjava.model;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+
+@Entity
 public class Vehicule {
+
+    @Id
+    @GeneratedValue
     private int id;
     private String brand;
     private String modele;
     private String color;
+
+    public int getPrix() {
+        return prix;
+    }
+
+    public void setPrix(int prix) {
+        this.prix = prix;
+    }
+
+    private int prix;
 
     //constructeur par défaut
     public Vehicule() {

@@ -1,10 +1,11 @@
 package com.campusjava.campusjava.web.controller;
 import com.campusjava.campusjava.model.Vehicule;
-import com.campusjava.campusjava.model.VehiculeForm;
 import com.campusjava.campusjava.service.VehiculeService;
+import com.fasterxml.jackson.databind.ser.FilterProvider;
+import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
+import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -17,30 +18,51 @@ public class VehiculeController {
     private VehiculeService vehiculeService;
 
     //Récupérer la liste des véhicules
-    @RequestMapping(value="/vehicules", method=RequestMethod.GET)
-    public List<Vehicule> allVehicules() {
-        return vehiculeService.getAllVehicule();
+    @RequestMapping(value = "/vehicules", method = RequestMethod.GET)
+    public MappingJacksonValue listeVehicules() {
+        Iterable<Vehicule> vehicules = vehiculeService.findAll();
+
+        SimpleBeanPropertyFilter monFiltre = SimpleBeanPropertyFilter.serializeAllExcept("prixAchat");
+
+        FilterProvider listDeNosFiltres = new SimpleFilterProvider().addFilter("monFiltreDynamique", monFiltre);
+
+        MappingJacksonValue vehiculesFiltres = new MappingJacksonValue(vehicules);
+
+        vehiculesFiltres.setFilters(listDeNosFiltres);
+
+        return vehiculesFiltres;
     }
+
 
     //Récupérer un véhicule par son Id
     @GetMapping(value="/vehicules/{id}")
     public Vehicule showOneVehicule(@PathVariable int id) {
-        return vehiculeService.getOneVehicule(id);
+        return vehiculeService.findById(id);
+    }
+
+    @GetMapping(value = "test/vehicules/prix/{prixLimit}")
+    public List<Vehicule> testeDeRequetes(@PathVariable int prixLimit) {
+        return vehiculeService.findByPrixGreaterThan(prixLimit);
     }
 
     @PostMapping(value="/vehicules")
     public void addVehicule(@RequestBody Vehicule vehicule) {
-        vehiculeService.addVehicule(vehicule);
+        vehiculeService.save(vehicule);
     }
 
-    @PutMapping(value = "/vehicules/{id}")
-    public void updateVehicule(@PathVariable int id, @RequestBody Vehicule vehicule){
-        vehiculeService.updateVehicule(id, vehicule);
+    @GetMapping(value = "test/vehicules/marque/{recherche}")
+    public List<Vehicule> testFindByName(@PathVariable String recherche) {
+        return vehiculeService.findByBrandLike("%"+recherche+"%");
+    }
+
+    @PutMapping(value = "/vehicules")
+    public void updateVehicule(@RequestBody Vehicule vehicule){
+        vehiculeService.save(vehicule);
     }
 
 
     @DeleteMapping(value="/vehicules/{id}")
     public void deleteVehicule(@PathVariable int id) {
-        vehiculeService.deleteVehicule(id);
+        vehiculeService.deleteById(id);
     }
 }
